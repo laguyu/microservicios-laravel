@@ -1,0 +1,13 @@
+kind: wasmer.io/App.v0
+owner: laguyu
+name: portfolio-auth-service
+package: .
+debug: false
+
+env:
+  CACHE_STORE: array
+  SESSION_DRIVER: array
+  VIEW_COMPILED_PATH: /tmp
+
+scaling:
+  mode: single_concurrency

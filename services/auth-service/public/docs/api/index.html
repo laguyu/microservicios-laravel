@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Auth Service API documentation</title>
+    <script src="https://unpkg.com/@stoplight/elements@8.4.2/web-components.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements@8.4.2/styles.min.css">
+    <style>
+        html, body { margin: 0; height: 100%; }
+        body { background-color: var(--color-canvas); }
+    </style>
+</head>
+<body style="height: 100vh; overflow-y: hidden">
+    <elements-api id="docs" layout="responsive" router="hash" try-it-credentials-policy="include"></elements-api>
+
+    <script>
+        fetch('/docs/api.json')
+            .then((response) => response.json())
+            .then((specification) => {
+                specification.servers = [{ url: `${window.location.origin}/api` }];
+                document.getElementById('docs').apiDescriptionDocument = specification;
+            });
+    </script>
+</body>
+</html>

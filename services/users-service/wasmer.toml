@@ -1,0 +1,17 @@
+[package]
+name = "portfolio-users-service"
+version = "0.1.0"
+description = "Laravel users microservice with client, project and task domains"
+license = "MIT"
+
+[build]
+command = "composer install --no-interaction --prefer-dist --no-progress && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force && php artisan optimize"
+
+[env]
+APP_ENV = "production"
+APP_DEBUG = "false"
+APP_URL = "https://portfolio-users-service.wasmer.app"
+DB_CONNECTION = "mysql"
+SESSION_DRIVER = "file"
+CACHE_STORE = "file"
+QUEUE_CONNECTION = "sync"

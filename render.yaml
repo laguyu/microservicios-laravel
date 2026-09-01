@@ -1,0 +1,134 @@
+services:
+  - type: web
+    name: portfolio-users-service
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: services/users-service/Dockerfile
+    dockerContext: services/users-service
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - services/users-service/**
+        - render.yaml
+    envVars:
+      - key: APP_NAME
+        value: Portfolio Users Service
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: debug
+      - key: APP_URL
+        fromService:
+          name: portfolio-users-service
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: APP_KEY
+        sync: false
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_TTL
+        value: "3600"
+      - key: AUTH_SERVICE_URL
+        value: https://portfolio-auth-service.wasmer.app
+      - key: USERS_SERVICE_URL
+        fromService:
+          name: portfolio-users-service
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: NOTIFICATIONS_SERVICE_URL
+        value: https://portfolio-notifications-service.onrender.com
+      - key: GATEWAY_URL
+        value: https://portfolio-api-gateway.wasmer.app
+
+  - type: web
+    name: portfolio-notifications-service
+    runtime: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: services/notifications-service/Dockerfile
+    dockerContext: services/notifications-service
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - services/notifications-service/**
+        - render.yaml
+    envVars:
+      - key: APP_NAME
+        value: Portfolio Notifications Service
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: debug
+      - key: APP_URL
+        fromService:
+          name: portfolio-notifications-service
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: APP_KEY
+        sync: false
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_DATABASE
+        sync: false
+      - key: DB_USERNAME
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_ALGORITHM
+        value: HS256
+      - key: JWT_TTL
+        value: "3600"
+      - key: AUTH_SERVICE_URL
+        value: https://portfolio-auth-service.wasmer.app
+      - key: USERS_SERVICE_URL
+        value: https://portfolio-users-service.onrender.com
+      - key: NOTIFICATIONS_SERVICE_URL
+        fromService:
+          name: portfolio-notifications-service
+          type: web
+          envVarKey: RENDER_EXTERNAL_URL
+      - key: GATEWAY_URL
+        value: https://portfolio-api-gateway.wasmer.app

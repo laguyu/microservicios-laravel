@@ -1,0 +1,96 @@
+name: Deploy Laravel microservices to Wasmer
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - auth-service
+          - users-service
+          - notifications-service
+          - api-gateway
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_mysql, zip, bcmath, intl
+          coverage: none
+
+      - name: Install Composer dependencies
+        working-directory: services/${{ matrix.service }}
+        run: composer install --no-interaction --prefer-dist --no-progress --no-scripts
+
+      - name: Prepare Laravel env
+        working-directory: services/${{ matrix.service }}
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+
+      - name: Run Laravel tests
+        working-directory: services/${{ matrix.service }}
+        run: php artisan test --compact
+
+  deploy:
+    needs: tests
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: auth-service
+            app_name: portfolio-auth-service
+          - service: api-gateway
+            app_name: portfolio-api-gateway
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_mysql, pdo_sqlite, zip, bcmath, intl
+          coverage: none
+
+      - name: Install Wasmer CLI
+        run: |
+          curl -fsSL https://get.wasmer.io -o /tmp/wasmer-install.sh
+          sh /tmp/wasmer-install.sh
+          echo "$HOME/.wasmer/bin" >> "$GITHUB_PATH"
+
+      - name: Login to Wasmer
+        env:
+          WASMER_TOKEN: ${{ secrets.WASMER_TOKEN }}
+        run: |
+          wasmer login "$WASMER_TOKEN"
+
+      - name: Deploy ${{ matrix.service }}
+        working-directory: services/${{ matrix.service }}
+        env:
+          WASMER_OWNER: ${{ secrets.WASMER_OWNER }}
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --no-progress --no-scripts
+          cp .env.example .env
+          php artisan key:generate --force
+          rm -f bootstrap/cache/*.php
+          touch database/scramble.sqlite
+          DB_CONNECTION=sqlite DB_DATABASE="$PWD/database/scramble.sqlite" php artisan migrate --force --no-interaction
+          DB_CONNECTION=sqlite DB_DATABASE="$PWD/database/scramble.sqlite" php artisan scramble:export --path=public/docs/api.json --no-interaction
+          rm -f database/scramble.sqlite
+          composer dump-autoload --no-dev --optimize
+          rm .env
+          wasmer deploy --app-name "${{ matrix.app_name }}" --owner "$WASMER_OWNER" --bump --non-interactive

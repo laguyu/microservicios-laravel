@@ -1,0 +1,1073 @@
+{
+  "info": {
+    "name": "Portfolio Microservices API",
+    "description": "Colección para probar los microservicios Laravel: auth-service, users-service, notifications-service y api-gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "gateway_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "auth_service_url",
+      "value": "http://127.0.0.1:8001",
+      "type": "string"
+    },
+    {
+      "key": "users_service_url",
+      "value": "http://127.0.0.1:8002",
+      "type": "string"
+    },
+    {
+      "key": "notifications_service_url",
+      "value": "http://127.0.0.1:8003",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "client_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "project_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth Service",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{auth_service_url}}/api/health",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8001",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service_url}}/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8001",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ana García\",\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "const json = pm.response.json();",
+                    "if (json && json.data && json.data.token) {",
+                    "  pm.collectionVariables.set('auth_token', json.data.token);",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service_url}}/api/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8001",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            },
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "const json = pm.response.json();",
+                    "if (json && json.data && json.data.token) {",
+                    "  pm.collectionVariables.set('auth_token', json.data.token);",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users Service",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/health",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/dashboard",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"María López\",\n  \"email\": \"maria@empresa.com\",\n  \"company\": \"Empresa ACME\",\n  \"status\": \"active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": 1,\n  \"name\": \"Portal Corporativo\",\n  \"status\": \"in_progress\",\n  \"budget\": 15000.5,\n  \"due_date\": \"2026-10-30\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": 1,\n  \"title\": \"Definir cronograma\",\n  \"assignee\": \"Ana García\",\n  \"priority\": \"high\",\n  \"status\": \"pending\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notifications Service",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{notifications_service_url}}/api/health",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8003",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{notifications_service_url}}/api/v1/notifications",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8003",
+              "path": [
+                "api",
+                "v1",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Send Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{notifications_service_url}}/api/v1/contact",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8003",
+              "path": [
+                "api",
+                "v1",
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"cliente@empresa.com\",\n  \"subject\": \"Consulta desde portafolio\",\n  \"message\": \"Necesito más información sobre el proyecto.\",\n  \"status\": \"queued\",\n  \"channel\": \"email\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Flujo completo del portafolio",
+      "item": [
+        {
+          "name": "1. Registrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service_url}}/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8001",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ana García\",\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 201\", function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('auth_token', json.data.token);",
+                  "}",
+                  "if (json && json.data && json.data.user && json.data.user.id) {",
+                  "  pm.collectionVariables.set('user_id', String(json.data.user.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Iniciar sesión",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{auth_service_url}}/api/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8001",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.token) {",
+                  "  pm.collectionVariables.set('auth_token', json.data.token);",
+                  "}",
+                  "if (json && json.data && json.data.user && json.data.user.id) {",
+                  "  pm.collectionVariables.set('user_id', String(json.data.user.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.length) {",
+                  "  const firstItem = json.data[0];",
+                  "  if (firstItem && firstItem.id) {",
+                  "    pm.collectionVariables.set('client_id', String(firstItem.id));",
+                  "  }",
+                  "}",
+                  "else {",
+                  "  pm.collectionVariables.set('client_id', '1');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Crear cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"María López\",\n  \"email\": \"maria@empresa.com\",\n  \"company\": \"Empresa ACME\",\n  \"status\": \"active\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 201\", function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.id) {",
+                  "  pm.collectionVariables.set('client_id', String(json.data.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. Listar proyectos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.length) {",
+                  "  const firstItem = json.data[0];",
+                  "  if (firstItem && firstItem.id) {",
+                  "    pm.collectionVariables.set('project_id', String(firstItem.id));",
+                  "  }",
+                  "}",
+                  "else {",
+                  "  pm.collectionVariables.set('project_id', '1');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. Crear proyecto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": {{client_id}},\n  \"name\": \"Portal Corporativo\",\n  \"status\": \"in_progress\",\n  \"budget\": 15000.5,\n  \"due_date\": \"2026-10-30\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 201\", function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.data && json.data.id) {",
+                  "  pm.collectionVariables.set('project_id', String(json.data.id));",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. Crear tarea",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{users_service_url}}/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8002",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": {{project_id}},\n  \"title\": \"Definir cronograma\",\n  \"assignee\": \"Ana García\",\n  \"priority\": \"high\",\n  \"status\": \"pending\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 201\", function () { pm.response.to.have.status(201); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Enviar mensaje de contacto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{notifications_service_url}}/api/v1/contact",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8003",
+              "path": [
+                "api",
+                "v1",
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"cliente@empresa.com\",\n  \"subject\": \"Consulta desde portafolio\",\n  \"message\": \"Necesito más información sobre el proyecto.\",\n  \"status\": \"queued\",\n  \"channel\": \"email\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status 202\", function () { pm.response.to.have.status(202); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "API Gateway",
+      "item": [
+        {
+          "name": "Gateway Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/health",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/auth/register",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ana García\",\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Gateway Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/auth/login",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"ana@ejemplo.com\",\n  \"password\": \"Secret123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Gateway Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/dashboard",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway List Clients",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/clients",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "clients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"María López\",\n  \"email\": \"maria@empresa.com\",\n  \"company\": \"Empresa ACME\",\n  \"status\": \"active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Gateway List Projects",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway Create Project",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/projects",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "projects"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"client_id\": 1,\n  \"name\": \"Portal Corporativo\",\n  \"status\": \"in_progress\",\n  \"budget\": 15000.5,\n  \"due_date\": \"2026-10-30\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Gateway List Tasks",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/tasks",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "tasks"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": 1,\n  \"title\": \"Definir cronograma\",\n  \"assignee\": \"Ana García\",\n  \"priority\": \"high\",\n  \"status\": \"pending\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Gateway List Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/notifications",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gateway Send Contact Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{gateway_url}}/api/v1/contact",
+              "protocol": "http",
+              "host": [
+                "127.0.0.1"
+              ],
+              "port": "8000",
+              "path": [
+                "api",
+                "v1",
+                "contact"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"cliente@empresa.com\",\n  \"subject\": \"Consulta desde portafolio\",\n  \"message\": \"Necesito más información sobre el proyecto.\",\n  \"status\": \"queued\",\n  \"channel\": \"email\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

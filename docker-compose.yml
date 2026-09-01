@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  api-gateway:
+    build: ./services/api-gateway
+    working_dir: /app
+    command: npm run dev
+    environment:
+      API_GATEWAY_PORT: 4000
+      AUTH_SERVICE_URL: http://auth-service:4001
+      USERS_SERVICE_URL: http://users-service:4002
+      NOTIFICATIONS_SERVICE_URL: http://notifications-service:4003
+    ports:
+      - '4000:4000'
+    depends_on:
+      - auth-service
+      - users-service
+      - notifications-service
+
+  auth-service:
+    build: ./services/auth-service
+    working_dir: /app
+    command: npm run dev
+    environment:
+      AUTH_SERVICE_PORT: 4001
+      JWT_SECRET: super-secret-key
+      CLEVER_CLOUD_DATABASE_URL: ${CLEVER_CLOUD_DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/portfolio}
+    ports:
+      - '4001:4001'
+
+  users-service:
+    build: ./services/users-service
+    working_dir: /app
+    command: npm run dev
+    environment:
+      USERS_SERVICE_PORT: 4002
+      CLEVER_CLOUD_DATABASE_URL: ${CLEVER_CLOUD_DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/portfolio}
+    ports:
+      - '4002:4002'
+
+  notifications-service:
+    build: ./services/notifications-service
+    working_dir: /app
+    command: npm run dev
+    environment:
+      NOTIFICATIONS_SERVICE_PORT: 4003
+    ports:
+      - '4003:4003'
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: portfolio
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

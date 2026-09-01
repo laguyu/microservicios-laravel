@@ -1,0 +1,304 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Laravel",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean"
+                                        },
+                                        "service": {
+                                            "type": "string",
+                                            "const": "auth-service"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "const": "healthy"
+                                        }
+                                    },
+                                    "required": [
+                                        "ok",
+                                        "service",
+                                        "status"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/register": {
+            "post": {
+                "operationId": "auth.register",
+                "description": "Registra un nuevo usuario y devuelve un token de acceso.",
+                "summary": "Registrar usuario",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Nombre completo del usuario.",
+                                        "examples": [
+                                            "Ana Garc\u00eda"
+                                        ]
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "description": "Correo electr\u00f3nico \u00fanico del usuario.",
+                                        "examples": [
+                                            "ana@ejemplo.com"
+                                        ]
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "description": "Contrase\u00f1a segura con al menos 8 caracteres.",
+                                        "examples": [
+                                            "Secret123"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Usuario registrado correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "id",
+                                                        "name",
+                                                        "email"
+                                                    ]
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "user",
+                                                "token"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "ok",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Los datos enviados no cumplen la validaci\u00f3n.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Errors overview."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "description": "A detailed description of each field that failed validation.",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/auth/login": {
+            "post": {
+                "operationId": "auth.login",
+                "description": "Autentica a un usuario y devuelve un token de acceso.",
+                "summary": "Iniciar sesi\u00f3n",
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "description": "Correo electr\u00f3nico registrado.",
+                                        "examples": [
+                                            "ana@ejemplo.com"
+                                        ]
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "description": "Contrase\u00f1a del usuario.",
+                                        "examples": [
+                                            "Secret123"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sesi\u00f3n iniciada correctamente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ok": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "id",
+                                                        "name",
+                                                        "email"
+                                                    ]
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "user",
+                                                "token"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "ok",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Credenciales inv\u00e1lidas.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Errors overview."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "description": "A detailed description of each field that failed validation.",
+                                            "additionalProperties": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "errors"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

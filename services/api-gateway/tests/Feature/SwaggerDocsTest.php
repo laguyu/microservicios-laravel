@@ -32,14 +32,15 @@ class SwaggerDocsTest extends TestCase
         /** @var array<string, mixed> $body */
         $body = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
-        $this->assertSame('http', $body['components']['securitySchemes']['BearerAuth']['type'] ?? null);
-        $this->assertSame('bearer', $body['components']['securitySchemes']['BearerAuth']['scheme'] ?? null);
-        $this->assertSame('JWT', $body['components']['securitySchemes']['BearerAuth']['bearerFormat'] ?? null);
+        $this->assertSame('http', $body['components']['securitySchemes']['http']['type'] ?? null);
+        $this->assertSame('bearer', $body['components']['securitySchemes']['http']['scheme'] ?? null);
+        $this->assertSame('JWT', $body['components']['securitySchemes']['http']['bearerFormat'] ?? null);
         $this->assertSame([
             [
-                'BearerAuth' => [],
+                'http' => [],
             ],
-        ], $body['paths']['/v1/dashboard']['get']['security'] ?? null);
+        ], $body['security'] ?? null);
+        $this->assertSame([], $body['paths']['/v1/auth/login']['post']['security'] ?? null);
     }
 
     public function test_gateway_forwards_registration_payload(): void

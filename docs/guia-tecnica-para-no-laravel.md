@@ -40,7 +40,7 @@ El cliente no necesita decidir si un endpoint pertenece a autenticación, usuari
 
 ### Auth Service
 
-Expone registro e inicio de sesión. Valida los datos recibidos, persiste usuarios y devuelve una respuesta con información de usuario y token de acceso.
+Expone registro e inicio de sesión. Valida los datos recibidos, persiste usuarios y devuelve una respuesta con información de usuario y un token JWT de acceso.
 
 Rutas principales:
 
@@ -49,7 +49,7 @@ Rutas principales:
 
 ### Users Service
 
-Representa la parte operativa de un negocio o portafolio profesional. Gestiona:
+Representa la parte operativa de un negocio o portafolio profesional. Sus endpoints están protegidos con `Authorization: Bearer <token>`. Gestiona:
 
 - dashboard de métricas;
 - clientes;
@@ -58,11 +58,13 @@ Representa la parte operativa de un negocio o portafolio profesional. Gestiona:
 
 ### Notifications Service
 
-Recibe mensajes de contacto y conserva un historial de notificaciones. Es un dominio separado porque la comunicación suele crecer de forma distinta a la lógica de clientes y proyectos.
+Recibe mensajes de contacto y conserva un historial de notificaciones. Sus endpoints también están protegidos con `Authorization: Bearer <token>`. Es un dominio separado porque la comunicación suele crecer de forma distinta a la lógica de clientes y proyectos.
 
 ### API Gateway
 
 El Gateway concentra el acceso público. Sus controladores documentan explícitamente los cuerpos de cada solicitud `POST`, reenvían la petición al servicio de dominio y retornan el código y el JSON recibidos.
+
+Las rutas públicas del Gateway son autenticación (`/api/v1/auth/register` y `/api/v1/auth/login`) y `health`. El resto de rutas de negocio requiere token JWT válido.
 
 Las URL internas de los servicios se resuelven mediante configuración de Laravel, no llamando variables de entorno directamente desde las rutas. Esto permite que el servicio funcione correctamente cuando la configuración se almacena en caché en producción.
 
@@ -80,7 +82,7 @@ Las variables contienen infraestructura y secretos; el código utiliza archivos 
 
 ## Documentación de la API
 
-Cada servicio utiliza Dedoc Scramble para construir un contrato OpenAPI. Este contrato describe rutas, campos, formatos y respuestas posibles.
+Cada servicio utiliza Dedoc Scramble para construir un contrato OpenAPI. Este contrato describe rutas, campos, formatos, respuestas posibles y requerimientos de seguridad Bearer donde aplica.
 
 La interfaz interactiva usa Stoplight Elements. Al abrir una ruta `POST` y seleccionar **Try It**, muestra los campos definidos para esa operación. Por ejemplo, el registro ofrece `name`, `email` y `password`.
 
@@ -124,7 +126,7 @@ El punto de entrada recomendado es:
 
 https://portfolio-api-gateway.wasmer.app/docs/api/
 
-Desde esta URL se pueden ejecutar solicitudes de ejemplo y comprobar los campos, códigos HTTP y respuestas JSON.
+Desde esta URL se pueden ejecutar solicitudes de ejemplo y comprobar los campos, códigos HTTP y respuestas JSON. Para endpoints privados, primero debes obtener JWT en login/register y autorizar con `Bearer <token>` desde el botón **Authorize**.
 
 ### Postman
 

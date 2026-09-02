@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Support\JwtToken;
 use Dedoc\Scramble\Attributes\BodyParameter;
 use Dedoc\Scramble\Attributes\Endpoint;
 use Dedoc\Scramble\Attributes\Response;
@@ -42,7 +43,7 @@ class AuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'token' => hash('sha256', $user->email.':'.$user->id.':'.now()->timestamp),
+                'token' => JwtToken::issue($user->id, $user->email),
             ],
         ], 201);
     }
@@ -75,7 +76,7 @@ class AuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                 ],
-                'token' => hash('sha256', $user->email.':'.$user->id.':'.now()->timestamp),
+                'token' => JwtToken::issue($user->id, $user->email),
             ],
         ]);
     }

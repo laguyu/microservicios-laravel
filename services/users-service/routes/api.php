@@ -11,7 +11,7 @@ Route::get('/health', function () {
     ]);
 });
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('jwt')->group(function () {
     Route::get('/dashboard', [OperationsController::class, 'dashboard']);
     Route::get('/clients', [OperationsController::class, 'clients']);
     Route::post('/clients', [OperationsController::class, 'storeClient']);

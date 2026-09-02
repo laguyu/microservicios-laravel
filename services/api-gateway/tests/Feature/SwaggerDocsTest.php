@@ -22,6 +22,26 @@ class SwaggerDocsTest extends TestCase
         $this->assertArrayHasKey('password', $schema['properties'] ?? []);
     }
 
+    public function test_gateway_openapi_marks_private_routes_as_bearer_protected(): void
+    {
+        $content = file_get_contents(public_path('docs/api.json'));
+
+        $this->assertNotFalse($content);
+        $content = preg_replace('/^\xEF\xBB\xBF/', '', $content) ?? $content;
+
+        /** @var array<string, mixed> $body */
+        $body = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+
+        $this->assertSame('http', $body['components']['securitySchemes']['BearerAuth']['type'] ?? null);
+        $this->assertSame('bearer', $body['components']['securitySchemes']['BearerAuth']['scheme'] ?? null);
+        $this->assertSame('JWT', $body['components']['securitySchemes']['BearerAuth']['bearerFormat'] ?? null);
+        $this->assertSame([
+            [
+                'BearerAuth' => [],
+            ],
+        ], $body['paths']['/v1/dashboard']['get']['security'] ?? null);
+    }
+
     public function test_gateway_forwards_registration_payload(): void
     {
         config()->set('services.microservices.auth', 'https://auth.test');

@@ -1,627 +1,727 @@
-{
-    "openapi": "3.1.0",
-    "info": {
-        "title": "Portfolio Api Gateway",
-        "version": "0.0.1"
-    },
-    "servers": [
-        {
-            "url": "https://portfolio-api-gateway.wasmer.app/api"
-        }
-    ],
-    "paths": {
-        "/health": {
-            "get": {
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "properties": {
-                                        "ok": {
-                                            "type": "boolean"
+﻿{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "Portfolio Api Gateway",
+                 "version":  "0.0.1"
+             },
+    "servers":  [
+                    {
+                        "url":  "https://portfolio-api-gateway.wasmer.app/api"
+                    }
+                ],
+    "paths":  {
+                  "/health":  {
+                                  "get":  {
+                                              "responses":  {
+                                                                "200":  {
+                                                                            "description":  "",
+                                                                            "content":  {
+                                                                                            "application/json":  {
+                                                                                                                     "schema":  {
+                                                                                                                                    "type":  "object",
+                                                                                                                                    "properties":  {
+                                                                                                                                                       "ok":  {
+                                                                                                                                                                  "type":  "boolean"
+                                                                                                                                                              },
+                                                                                                                                                       "service":  {
+                                                                                                                                                                       "type":  "string",
+                                                                                                                                                                       "const":  "api-gateway"
+                                                                                                                                                                   },
+                                                                                                                                                       "status":  {
+                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                      "const":  "healthy"
+                                                                                                                                                                  }
+                                                                                                                                                   },
+                                                                                                                                    "required":  [
+                                                                                                                                                     "ok",
+                                                                                                                                                     "service",
+                                                                                                                                                     "status"
+                                                                                                                                                 ]
+                                                                                                                                }
+                                                                                                                 }
+                                                                                        }
+                                                                        }
+                                                            }
+                                          }
+                              },
+                  "/v1/auth/register":  {
+                                            "post":  {
+                                                         "operationId":  "gateway.register",
+                                                         "description":  "Reenvía el registro de usuario al servicio de autenticación.",
+                                                         "summary":  "Registrar usuario",
+                                                         "tags":  [
+                                                                      "Gateway"
+                                                                  ],
+                                                         "requestBody":  {
+                                                                             "required":  true,
+                                                                             "content":  {
+                                                                                             "application/json":  {
+                                                                                                                      "schema":  {
+                                                                                                                                     "type":  "object",
+                                                                                                                                     "properties":  {
+                                                                                                                                                        "name":  {
+                                                                                                                                                                     "type":  "string",
+                                                                                                                                                                     "description":  "Nombre completo del usuario.",
+                                                                                                                                                                     "examples":  [
+                                                                                                                                                                                      "Ana García"
+                                                                                                                                                                                  ]
+                                                                                                                                                                 },
+                                                                                                                                                        "email":  {
+                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                      "format":  "email",
+                                                                                                                                                                      "description":  "Correo electrónico único del usuario.",
+                                                                                                                                                                      "examples":  [
+                                                                                                                                                                                       "ana@ejemplo.com"
+                                                                                                                                                                                   ]
+                                                                                                                                                                  },
+                                                                                                                                                        "password":  {
+                                                                                                                                                                         "type":  "string",
+                                                                                                                                                                         "format":  "password",
+                                                                                                                                                                         "description":  "Contraseña segura con al menos 8 caracteres.",
+                                                                                                                                                                         "examples":  [
+                                                                                                                                                                                          "Secret123"
+                                                                                                                                                                                      ]
+                                                                                                                                                                     }
+                                                                                                                                                    },
+                                                                                                                                     "required":  [
+                                                                                                                                                      "name",
+                                                                                                                                                      "email",
+                                                                                                                                                      "password"
+                                                                                                                                                  ]
+                                                                                                                                 }
+                                                                                                                  }
+                                                                                         }
+                                                                         },
+                                                         "responses":  {
+                                                                           "200":  {
+                                                                                       "description":  "",
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "type":  "string"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   }
+                                                                                   },
+                                                                           "201":  {
+                                                                                       "description":  "Usuario registrado correctamente.",
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "type":  "string"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   }
+                                                                                   },
+                                                                           "422":  {
+                                                                                       "description":  "Los datos enviados no cumplen la validación.",
+                                                                                       "content":  {
+                                                                                                       "application/json":  {
+                                                                                                                                "schema":  {
+                                                                                                                                               "type":  "string"
+                                                                                                                                           }
+                                                                                                                            }
+                                                                                                   }
+                                                                                   }
+                                                                       }
+                                                     }
                                         },
-                                        "service": {
-                                            "type": "string",
-                                            "const": "api-gateway"
+                  "/v1/auth/login":  {
+                                         "post":  {
+                                                      "operationId":  "gateway.login",
+                                                      "description":  "Reenvía la autenticación al servicio de autenticación.",
+                                                      "summary":  "Iniciar sesión",
+                                                      "tags":  [
+                                                                   "Gateway"
+                                                               ],
+                                                      "requestBody":  {
+                                                                          "required":  true,
+                                                                          "content":  {
+                                                                                          "application/json":  {
+                                                                                                                   "schema":  {
+                                                                                                                                  "type":  "object",
+                                                                                                                                  "properties":  {
+                                                                                                                                                     "email":  {
+                                                                                                                                                                   "type":  "string",
+                                                                                                                                                                   "format":  "email",
+                                                                                                                                                                   "description":  "Correo electrónico registrado.",
+                                                                                                                                                                   "examples":  [
+                                                                                                                                                                                    "ana@ejemplo.com"
+                                                                                                                                                                                ]
+                                                                                                                                                               },
+                                                                                                                                                     "password":  {
+                                                                                                                                                                      "type":  "string",
+                                                                                                                                                                      "format":  "password",
+                                                                                                                                                                      "description":  "Contraseña del usuario.",
+                                                                                                                                                                      "examples":  [
+                                                                                                                                                                                       "Secret123"
+                                                                                                                                                                                   ]
+                                                                                                                                                                  }
+                                                                                                                                                 },
+                                                                                                                                  "required":  [
+                                                                                                                                                   "email",
+                                                                                                                                                   "password"
+                                                                                                                                               ]
+                                                                                                                              }
+                                                                                                               }
+                                                                                      }
+                                                                      },
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "Sesión iniciada correctamente.",
+                                                                                    "content":  {
+                                                                                                    "application/json":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "type":  "string"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                }
+                                                                                },
+                                                                        "422":  {
+                                                                                    "description":  "Credenciales inválidas.",
+                                                                                    "content":  {
+                                                                                                    "application/json":  {
+                                                                                                                             "schema":  {
+                                                                                                                                            "type":  "string"
+                                                                                                                                        }
+                                                                                                                         }
+                                                                                                }
+                                                                                }
+                                                                    }
+                                                  }
+                                     },
+                  "/v1/dashboard":  {
+                                        "get":  {
+                                                    "operationId":  "gateway.dashboard",
+                                                    "description":  "Obtiene métricas y registros recientes desde el servicio de usuarios.",
+                                                    "summary":  "Dashboard de operaciones",
+                                                    "tags":  [
+                                                                 "Gateway"
+                                                             ],
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "Resumen del estado del negocio.",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "type":  "string"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
+                                                                              },
+                                                                      "401":  {
+                                                                                  "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                              }
+                                                                  },
+                                                    "security":  [
+                                                                     {
+                                                                         "BearerAuth":  [
+
+                                                                                        ]
+                                                                     }
+                                                                 ]
+                                                }
+                                    },
+                  "/v1/clients":  {
+                                      "get":  {
+                                                  "operationId":  "gateway.clients",
+                                                  "description":  "Obtiene los clientes desde el servicio de usuarios.",
+                                                  "summary":  "Listar clientes",
+                                                  "tags":  [
+                                                               "Gateway"
+                                                           ],
+                                                  "responses":  {
+                                                                    "200":  {
+                                                                                "description":  "Listado de clientes.",
+                                                                                "content":  {
+                                                                                                "application/json":  {
+                                                                                                                         "schema":  {
+                                                                                                                                        "type":  "string"
+                                                                                                                                    }
+                                                                                                                     }
+                                                                                            }
+                                                                            },
+                                                                    "401":  {
+                                                                                "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                            }
+                                                                },
+                                                  "security":  [
+                                                                   {
+                                                                       "BearerAuth":  [
+
+                                                                                      ]
+                                                                   }
+                                                               ]
+                                              },
+                                      "post":  {
+                                                   "operationId":  "gateway.storeClient",
+                                                   "description":  "Reenvía la creación de un cliente al servicio de usuarios.",
+                                                   "summary":  "Crear cliente",
+                                                   "tags":  [
+                                                                "Gateway"
+                                                            ],
+                                                   "requestBody":  {
+                                                                       "required":  true,
+                                                                       "content":  {
+                                                                                       "application/json":  {
+                                                                                                                "schema":  {
+                                                                                                                               "type":  "object",
+                                                                                                                               "properties":  {
+                                                                                                                                                  "name":  {
+                                                                                                                                                               "type":  "string",
+                                                                                                                                                               "description":  "Nombre del cliente.",
+                                                                                                                                                               "examples":  [
+                                                                                                                                                                                "María López"
+                                                                                                                                                                            ]
+                                                                                                                                                           },
+                                                                                                                                                  "email":  {
+                                                                                                                                                                "type":  "string",
+                                                                                                                                                                "format":  "email",
+                                                                                                                                                                "description":  "Correo electrónico del cliente.",
+                                                                                                                                                                "examples":  [
+                                                                                                                                                                                 "maria@empresa.com"
+                                                                                                                                                                             ]
+                                                                                                                                                            },
+                                                                                                                                                  "company":  {
+                                                                                                                                                                  "type":  "string",
+                                                                                                                                                                  "description":  "Empresa del cliente.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   "Empresa ACME"
+                                                                                                                                                                               ]
+                                                                                                                                                              },
+                                                                                                                                                  "status":  {
+                                                                                                                                                                 "type":  "string",
+                                                                                                                                                                 "description":  "Estado del cliente.",
+                                                                                                                                                                 "examples":  [
+                                                                                                                                                                                  "active"
+                                                                                                                                                                              ]
+                                                                                                                                                             }
+                                                                                                                                              },
+                                                                                                                               "required":  [
+                                                                                                                                                "name",
+                                                                                                                                                "email"
+                                                                                                                                            ]
+                                                                                                                           }
+                                                                                                            }
+                                                                                   }
+                                                                   },
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "type":  "string"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "201":  {
+                                                                                 "description":  "Cliente creado correctamente.",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "type":  "string"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "401":  {
+                                                                                 "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                             }
+                                                                 },
+                                                   "security":  [
+                                                                    {
+                                                                        "BearerAuth":  [
+
+                                                                                       ]
+                                                                    }
+                                                                ]
+                                               }
+                                  },
+                  "/v1/projects":  {
+                                       "get":  {
+                                                   "operationId":  "gateway.projects",
+                                                   "description":  "Obtiene los proyectos desde el servicio de usuarios.",
+                                                   "summary":  "Listar proyectos",
+                                                   "tags":  [
+                                                                "Gateway"
+                                                            ],
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "Listado de proyectos.",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "type":  "string"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "401":  {
+                                                                                 "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                             }
+                                                                 },
+                                                   "security":  [
+                                                                    {
+                                                                        "BearerAuth":  [
+
+                                                                                       ]
+                                                                    }
+                                                                ]
+                                               },
+                                       "post":  {
+                                                    "operationId":  "gateway.storeProject",
+                                                    "description":  "Reenvía la creación de un proyecto al servicio de usuarios.",
+                                                    "summary":  "Crear proyecto",
+                                                    "tags":  [
+                                                                 "Gateway"
+                                                             ],
+                                                    "requestBody":  {
+                                                                        "required":  true,
+                                                                        "content":  {
+                                                                                        "application/json":  {
+                                                                                                                 "schema":  {
+                                                                                                                                "type":  "object",
+                                                                                                                                "properties":  {
+                                                                                                                                                   "client_id":  {
+                                                                                                                                                                     "type":  "integer",
+                                                                                                                                                                     "description":  "Identificador del cliente relacionado.",
+                                                                                                                                                                     "examples":  [
+                                                                                                                                                                                      1
+                                                                                                                                                                                  ]
+                                                                                                                                                                 },
+                                                                                                                                                   "name":  {
+                                                                                                                                                                "type":  "string",
+                                                                                                                                                                "description":  "Nombre del proyecto.",
+                                                                                                                                                                "examples":  [
+                                                                                                                                                                                 "Portal corporativo"
+                                                                                                                                                                             ]
+                                                                                                                                                            },
+                                                                                                                                                   "status":  {
+                                                                                                                                                                  "type":  "string",
+                                                                                                                                                                  "description":  "Estado del proyecto.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   "in_progress"
+                                                                                                                                                                               ]
+                                                                                                                                                              },
+                                                                                                                                                   "budget":  {
+                                                                                                                                                                  "type":  "object",
+                                                                                                                                                                  "description":  "Presupuesto del proyecto.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   15000.5
+                                                                                                                                                                               ]
+                                                                                                                                                              },
+                                                                                                                                                   "due_date":  {
+                                                                                                                                                                    "type":  "string",
+                                                                                                                                                                    "format":  "date",
+                                                                                                                                                                    "description":  "Fecha límite del proyecto.",
+                                                                                                                                                                    "examples":  [
+                                                                                                                                                                                     "2026-10-30"
+                                                                                                                                                                                 ]
+                                                                                                                                                                }
+                                                                                                                                               },
+                                                                                                                                "required":  [
+                                                                                                                                                 "client_id",
+                                                                                                                                                 "name"
+                                                                                                                                             ]
+                                                                                                                            }
+                                                                                                             }
+                                                                                    }
+                                                                    },
+                                                    "responses":  {
+                                                                      "200":  {
+                                                                                  "description":  "",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "type":  "string"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
+                                                                              },
+                                                                      "201":  {
+                                                                                  "description":  "Proyecto creado correctamente.",
+                                                                                  "content":  {
+                                                                                                  "application/json":  {
+                                                                                                                           "schema":  {
+                                                                                                                                          "type":  "string"
+                                                                                                                                      }
+                                                                                                                       }
+                                                                                              }
+                                                                              },
+                                                                      "401":  {
+                                                                                  "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                              }
+                                                                  },
+                                                    "security":  [
+                                                                     {
+                                                                         "BearerAuth":  [
+
+                                                                                        ]
+                                                                     }
+                                                                 ]
+                                                }
+                                   },
+                  "/v1/tasks":  {
+                                    "get":  {
+                                                "operationId":  "gateway.tasks",
+                                                "description":  "Obtiene las tareas desde el servicio de usuarios.",
+                                                "summary":  "Listar tareas",
+                                                "tags":  [
+                                                             "Gateway"
+                                                         ],
+                                                "responses":  {
+                                                                  "200":  {
+                                                                              "description":  "Listado de tareas.",
+                                                                              "content":  {
+                                                                                              "application/json":  {
+                                                                                                                       "schema":  {
+                                                                                                                                      "type":  "string"
+                                                                                                                                  }
+                                                                                                                   }
+                                                                                          }
+                                                                          },
+                                                                  "401":  {
+                                                                              "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                          }
+                                                              },
+                                                "security":  [
+                                                                 {
+                                                                     "BearerAuth":  [
+
+                                                                                    ]
+                                                                 }
+                                                             ]
+                                            },
+                                    "post":  {
+                                                 "operationId":  "gateway.storeTask",
+                                                 "description":  "Reenvía la creación de una tarea al servicio de usuarios.",
+                                                 "summary":  "Crear tarea",
+                                                 "tags":  [
+                                                              "Gateway"
+                                                          ],
+                                                 "requestBody":  {
+                                                                     "required":  true,
+                                                                     "content":  {
+                                                                                     "application/json":  {
+                                                                                                              "schema":  {
+                                                                                                                             "type":  "object",
+                                                                                                                             "properties":  {
+                                                                                                                                                "project_id":  {
+                                                                                                                                                                   "type":  "integer",
+                                                                                                                                                                   "description":  "Identificador del proyecto asociado.",
+                                                                                                                                                                   "examples":  [
+                                                                                                                                                                                    1
+                                                                                                                                                                                ]
+                                                                                                                                                               },
+                                                                                                                                                "title":  {
+                                                                                                                                                              "type":  "string",
+                                                                                                                                                              "description":  "Título de la tarea.",
+                                                                                                                                                              "examples":  [
+                                                                                                                                                                               "Definir cronograma"
+                                                                                                                                                                           ]
+                                                                                                                                                          },
+                                                                                                                                                "assignee":  {
+                                                                                                                                                                 "type":  "string",
+                                                                                                                                                                 "description":  "Responsable de la tarea.",
+                                                                                                                                                                 "examples":  [
+                                                                                                                                                                                  "Ana García"
+                                                                                                                                                                              ]
+                                                                                                                                                             },
+                                                                                                                                                "priority":  {
+                                                                                                                                                                 "type":  "string",
+                                                                                                                                                                 "description":  "Prioridad de la tarea.",
+                                                                                                                                                                 "examples":  [
+                                                                                                                                                                                  "high"
+                                                                                                                                                                              ]
+                                                                                                                                                             },
+                                                                                                                                                "status":  {
+                                                                                                                                                               "type":  "string",
+                                                                                                                                                               "description":  "Estado de la tarea.",
+                                                                                                                                                               "examples":  [
+                                                                                                                                                                                "pending"
+                                                                                                                                                                            ]
+                                                                                                                                                           }
+                                                                                                                                            },
+                                                                                                                             "required":  [
+                                                                                                                                              "project_id",
+                                                                                                                                              "title"
+                                                                                                                                          ]
+                                                                                                                         }
+                                                                                                          }
+                                                                                 }
+                                                                 },
+                                                 "responses":  {
+                                                                   "200":  {
+                                                                               "description":  "",
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "type":  "string"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           }
+                                                                           },
+                                                                   "201":  {
+                                                                               "description":  "Tarea creada correctamente.",
+                                                                               "content":  {
+                                                                                               "application/json":  {
+                                                                                                                        "schema":  {
+                                                                                                                                       "type":  "string"
+                                                                                                                                   }
+                                                                                                                    }
+                                                                                           }
+                                                                           },
+                                                                   "401":  {
+                                                                               "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                           }
+                                                               },
+                                                 "security":  [
+                                                                  {
+                                                                      "BearerAuth":  [
+
+                                                                                     ]
+                                                                  }
+                                                              ]
+                                             }
+                                },
+                  "/v1/notifications":  {
+                                            "get":  {
+                                                        "operationId":  "gateway.notifications",
+                                                        "description":  "Obtiene notificaciones desde el servicio de notificaciones.",
+                                                        "summary":  "Listar notificaciones",
+                                                        "tags":  [
+                                                                     "Gateway"
+                                                                 ],
+                                                        "responses":  {
+                                                                          "200":  {
+                                                                                      "description":  "Listado de notificaciones.",
+                                                                                      "content":  {
+                                                                                                      "application/json":  {
+                                                                                                                               "schema":  {
+                                                                                                                                              "type":  "string"
+                                                                                                                                          }
+                                                                                                                           }
+                                                                                                  }
+                                                                                  },
+                                                                          "401":  {
+                                                                                      "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                                  }
+                                                                      },
+                                                        "security":  [
+                                                                         {
+                                                                             "BearerAuth":  [
+
+                                                                                            ]
+                                                                         }
+                                                                     ]
+                                                    }
                                         },
-                                        "status": {
-                                            "type": "string",
-                                            "const": "healthy"
-                                        }
-                                    },
-                                    "required": [
-                                        "ok",
-                                        "service",
-                                        "status"
-                                    ]
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/auth/register": {
-            "post": {
-                "operationId": "gateway.register",
-                "description": "Reenv\u00eda el registro de usuario al servicio de autenticaci\u00f3n.",
-                "summary": "Registrar usuario",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "description": "Nombre completo del usuario.",
-                                        "examples": [
-                                            "Ana Garc\u00eda"
-                                        ]
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "description": "Correo electr\u00f3nico \u00fanico del usuario.",
-                                        "examples": [
-                                            "ana@ejemplo.com"
-                                        ]
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "description": "Contrase\u00f1a segura con al menos 8 caracteres.",
-                                        "examples": [
-                                            "Secret123"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Usuario registrado correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Los datos enviados no cumplen la validaci\u00f3n.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/auth/login": {
-            "post": {
-                "operationId": "gateway.login",
-                "description": "Reenv\u00eda la autenticaci\u00f3n al servicio de autenticaci\u00f3n.",
-                "summary": "Iniciar sesi\u00f3n",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "description": "Correo electr\u00f3nico registrado.",
-                                        "examples": [
-                                            "ana@ejemplo.com"
-                                        ]
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "format": "password",
-                                        "description": "Contrase\u00f1a del usuario.",
-                                        "examples": [
-                                            "Secret123"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "email",
-                                    "password"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Sesi\u00f3n iniciada correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Credenciales inv\u00e1lidas.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/dashboard": {
-            "get": {
-                "operationId": "gateway.dashboard",
-                "description": "Obtiene m\u00e9tricas y registros recientes desde el servicio de usuarios.",
-                "summary": "Dashboard de operaciones",
-                "tags": [
-                    "Gateway"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Resumen del estado del negocio.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/clients": {
-            "get": {
-                "operationId": "gateway.clients",
-                "description": "Obtiene los clientes desde el servicio de usuarios.",
-                "summary": "Listar clientes",
-                "tags": [
-                    "Gateway"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Listado de clientes.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "operationId": "gateway.storeClient",
-                "description": "Reenv\u00eda la creaci\u00f3n de un cliente al servicio de usuarios.",
-                "summary": "Crear cliente",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "description": "Nombre del cliente.",
-                                        "examples": [
-                                            "Mar\u00eda L\u00f3pez"
-                                        ]
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "description": "Correo electr\u00f3nico del cliente.",
-                                        "examples": [
-                                            "maria@empresa.com"
-                                        ]
-                                    },
-                                    "company": {
-                                        "type": "string",
-                                        "description": "Empresa del cliente.",
-                                        "examples": [
-                                            "Empresa ACME"
-                                        ]
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "description": "Estado del cliente.",
-                                        "examples": [
-                                            "active"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "name",
-                                    "email"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Cliente creado correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/projects": {
-            "get": {
-                "operationId": "gateway.projects",
-                "description": "Obtiene los proyectos desde el servicio de usuarios.",
-                "summary": "Listar proyectos",
-                "tags": [
-                    "Gateway"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Listado de proyectos.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "operationId": "gateway.storeProject",
-                "description": "Reenv\u00eda la creaci\u00f3n de un proyecto al servicio de usuarios.",
-                "summary": "Crear proyecto",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "client_id": {
-                                        "type": "integer",
-                                        "description": "Identificador del cliente relacionado.",
-                                        "examples": [
-                                            1
-                                        ]
-                                    },
-                                    "name": {
-                                        "type": "string",
-                                        "description": "Nombre del proyecto.",
-                                        "examples": [
-                                            "Portal corporativo"
-                                        ]
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "description": "Estado del proyecto.",
-                                        "examples": [
-                                            "in_progress"
-                                        ]
-                                    },
-                                    "budget": {
-                                        "type": "object",
-                                        "description": "Presupuesto del proyecto.",
-                                        "examples": [
-                                            15000.5
-                                        ]
-                                    },
-                                    "due_date": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "description": "Fecha l\u00edmite del proyecto.",
-                                        "examples": [
-                                            "2026-10-30"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "client_id",
-                                    "name"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Proyecto creado correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/tasks": {
-            "get": {
-                "operationId": "gateway.tasks",
-                "description": "Obtiene las tareas desde el servicio de usuarios.",
-                "summary": "Listar tareas",
-                "tags": [
-                    "Gateway"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Listado de tareas.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "operationId": "gateway.storeTask",
-                "description": "Reenv\u00eda la creaci\u00f3n de una tarea al servicio de usuarios.",
-                "summary": "Crear tarea",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "project_id": {
-                                        "type": "integer",
-                                        "description": "Identificador del proyecto asociado.",
-                                        "examples": [
-                                            1
-                                        ]
-                                    },
-                                    "title": {
-                                        "type": "string",
-                                        "description": "T\u00edtulo de la tarea.",
-                                        "examples": [
-                                            "Definir cronograma"
-                                        ]
-                                    },
-                                    "assignee": {
-                                        "type": "string",
-                                        "description": "Responsable de la tarea.",
-                                        "examples": [
-                                            "Ana Garc\u00eda"
-                                        ]
-                                    },
-                                    "priority": {
-                                        "type": "string",
-                                        "description": "Prioridad de la tarea.",
-                                        "examples": [
-                                            "high"
-                                        ]
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "description": "Estado de la tarea.",
-                                        "examples": [
-                                            "pending"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "project_id",
-                                    "title"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Tarea creada correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/notifications": {
-            "get": {
-                "operationId": "gateway.notifications",
-                "description": "Obtiene notificaciones desde el servicio de notificaciones.",
-                "summary": "Listar notificaciones",
-                "tags": [
-                    "Gateway"
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Listado de notificaciones.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/v1/contact": {
-            "post": {
-                "operationId": "gateway.storeContact",
-                "description": "Reenv\u00eda un mensaje al servicio de notificaciones.",
-                "summary": "Enviar contacto o notificaci\u00f3n",
-                "tags": [
-                    "Gateway"
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "to": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "description": "Correo electr\u00f3nico del destinatario.",
-                                        "examples": [
-                                            "cliente@empresa.com"
-                                        ]
-                                    },
-                                    "subject": {
-                                        "type": "string",
-                                        "description": "Asunto del mensaje.",
-                                        "examples": [
-                                            "Consulta desde portafolio"
-                                        ]
-                                    },
-                                    "message": {
-                                        "type": "string",
-                                        "description": "Contenido del mensaje.",
-                                        "examples": [
-                                            "Necesito m\u00e1s informaci\u00f3n sobre el proyecto."
-                                        ]
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "description": "Estado del env\u00edo.",
-                                        "examples": [
-                                            "queued"
-                                        ]
-                                    },
-                                    "channel": {
-                                        "type": "string",
-                                        "description": "Canal de entrega.",
-                                        "examples": [
-                                            "email"
-                                        ]
-                                    }
-                                },
-                                "required": [
-                                    "to",
-                                    "subject",
-                                    "message"
-                                ]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    },
-                    "202": {
-                        "description": "Notificaci\u00f3n registrada correctamente.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+                  "/v1/contact":  {
+                                      "post":  {
+                                                   "operationId":  "gateway.storeContact",
+                                                   "description":  "Reenvía un mensaje al servicio de notificaciones.",
+                                                   "summary":  "Enviar contacto o notificación",
+                                                   "tags":  [
+                                                                "Gateway"
+                                                            ],
+                                                   "requestBody":  {
+                                                                       "required":  true,
+                                                                       "content":  {
+                                                                                       "application/json":  {
+                                                                                                                "schema":  {
+                                                                                                                               "type":  "object",
+                                                                                                                               "properties":  {
+                                                                                                                                                  "to":  {
+                                                                                                                                                             "type":  "string",
+                                                                                                                                                             "format":  "email",
+                                                                                                                                                             "description":  "Correo electrónico del destinatario.",
+                                                                                                                                                             "examples":  [
+                                                                                                                                                                              "cliente@empresa.com"
+                                                                                                                                                                          ]
+                                                                                                                                                         },
+                                                                                                                                                  "subject":  {
+                                                                                                                                                                  "type":  "string",
+                                                                                                                                                                  "description":  "Asunto del mensaje.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   "Consulta desde portafolio"
+                                                                                                                                                                               ]
+                                                                                                                                                              },
+                                                                                                                                                  "message":  {
+                                                                                                                                                                  "type":  "string",
+                                                                                                                                                                  "description":  "Contenido del mensaje.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   "Necesito más información sobre el proyecto."
+                                                                                                                                                                               ]
+                                                                                                                                                              },
+                                                                                                                                                  "status":  {
+                                                                                                                                                                 "type":  "string",
+                                                                                                                                                                 "description":  "Estado del envío.",
+                                                                                                                                                                 "examples":  [
+                                                                                                                                                                                  "queued"
+                                                                                                                                                                              ]
+                                                                                                                                                             },
+                                                                                                                                                  "channel":  {
+                                                                                                                                                                  "type":  "string",
+                                                                                                                                                                  "description":  "Canal de entrega.",
+                                                                                                                                                                  "examples":  [
+                                                                                                                                                                                   "email"
+                                                                                                                                                                               ]
+                                                                                                                                                              }
+                                                                                                                                              },
+                                                                                                                               "required":  [
+                                                                                                                                                "to",
+                                                                                                                                                "subject",
+                                                                                                                                                "message"
+                                                                                                                                            ]
+                                                                                                                           }
+                                                                                                            }
+                                                                                   }
+                                                                   },
+                                                   "responses":  {
+                                                                     "200":  {
+                                                                                 "description":  "",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "type":  "string"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "202":  {
+                                                                                 "description":  "Notificación registrada correctamente.",
+                                                                                 "content":  {
+                                                                                                 "application/json":  {
+                                                                                                                          "schema":  {
+                                                                                                                                         "type":  "string"
+                                                                                                                                     }
+                                                                                                                      }
+                                                                                             }
+                                                                             },
+                                                                     "401":  {
+                                                                                 "description":  "Unauthorized. Missing or invalid Bearer token."
+                                                                             }
+                                                                 },
+                                                   "security":  [
+                                                                    {
+                                                                        "BearerAuth":  [
+
+                                                                                       ]
+                                                                    }
+                                                                ]
+                                               }
+                                  }
+              },
+    "components":  {
+                       "securitySchemes":  {
+                                               "BearerAuth":  {
+                                                                  "type":  "http",
+                                                                  "scheme":  "bearer",
+                                                                  "bearerFormat":  "JWT",
+                                                                  "description":  "Use Authorization: Bearer \u003ctoken\u003e"
+                                                              }
+                                           }
+                   }
 }

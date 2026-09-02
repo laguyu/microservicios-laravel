@@ -14,6 +14,9 @@ Route::get('/health', function () {
 Route::prefix('v1')->group(function () {
     Route::post('/auth/register', [GatewayController::class, 'register']);
     Route::post('/auth/login', [GatewayController::class, 'login']);
+});
+
+Route::prefix('v1')->middleware('jwt')->group(function () {
     Route::get('/dashboard', [GatewayController::class, 'dashboard']);
     Route::get('/clients', [GatewayController::class, 'clients']);
     Route::post('/clients', [GatewayController::class, 'storeClient']);

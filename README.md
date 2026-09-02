@@ -41,16 +41,16 @@ Base URL: `https://portfolio-api-gateway.wasmer.app/api`
 | Método | Ruta | Acción |
 | --- | --- | --- |
 | `GET` | `/health` | Verifica el estado del Gateway. |
-| `POST` | `/v1/auth/register` | Registra un usuario. |
-| `POST` | `/v1/auth/login` | Inicia sesión. |
-| `GET` | `/v1/dashboard` | Obtiene métricas operativas. |
-| `GET`, `POST` | `/v1/clients` | Lista o crea clientes. |
-| `GET`, `POST` | `/v1/projects` | Lista o crea proyectos. |
-| `GET`, `POST` | `/v1/tasks` | Lista o crea tareas. |
-| `GET` | `/v1/notifications` | Lista notificaciones. |
-| `POST` | `/v1/contact` | Registra un mensaje de contacto. |
+| `POST` | `/v1/auth/register` | Registra un usuario (pública). |
+| `POST` | `/v1/auth/login` | Inicia sesión (pública). |
+| `GET` | `/v1/dashboard` | Obtiene métricas operativas (requiere `Bearer token`). |
+| `GET`, `POST` | `/v1/clients` | Lista o crea clientes (requiere `Bearer token`). |
+| `GET`, `POST` | `/v1/projects` | Lista o crea proyectos (requiere `Bearer token`). |
+| `GET`, `POST` | `/v1/tasks` | Lista o crea tareas (requiere `Bearer token`). |
+| `GET` | `/v1/notifications` | Lista notificaciones (requiere `Bearer token`). |
+| `POST` | `/v1/contact` | Registra un mensaje de contacto (requiere `Bearer token`). |
 
-Los endpoints `POST` están documentados con esquemas OpenAPI explícitos. Por ejemplo, el registro solicita `name`, `email` y `password`; la interfaz **Try It** presenta esos campos para hacer pruebas.
+Los endpoints `POST` están documentados con esquemas OpenAPI explícitos. Por ejemplo, el registro solicita `name`, `email` y `password`; la interfaz **Try It** presenta esos campos para hacer pruebas. Las rutas privadas además aparecen con esquema `BearerAuth` en el contrato OpenAPI.
 
 ## Documentación OpenAPI
 
@@ -68,10 +68,10 @@ En Wasmer, el documento OpenAPI se exporta en CI como archivo estático (`public
 ## Cómo probar la demo
 
 1. Abre el enlace de demo del Gateway.
-2. Expande un endpoint `POST`, por ejemplo **Registrar usuario**.
-3. Pulsa **Try It** y completa los campos del formulario.
-4. Ejecuta la petición y revisa la respuesta JSON y su código HTTP.
-5. Para un flujo completo, crea un cliente, usa su identificador para crear un proyecto y usa el identificador del proyecto para crear una tarea.
+2. Ejecuta `POST /v1/auth/register` o `POST /v1/auth/login` y copia el token JWT de la respuesta.
+3. Pulsa **Authorize** y pega `Bearer <token>`.
+4. Expande cualquier ruta privada como `GET /v1/dashboard` o `POST /v1/clients`.
+5. Pulsa **Try It**, ejecuta y valida la respuesta JSON junto al código HTTP.
 
 También se incluye una colección de Postman en [postman/portfolio-microservices.postman_collection.json](postman/portfolio-microservices.postman_collection.json) y el entorno local en [postman/portfolio-microservices.postman_environment.json](postman/portfolio-microservices.postman_environment.json).
 

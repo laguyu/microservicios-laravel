@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Support\JwtToken;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,12 +12,26 @@ class OperationsApiTest extends TestCase
 
     public function test_dashboard_and_domain_resources_work(): void
     {
+        config()->set('app.jwt_secret', 'testing-secret');
+        config()->set('app.jwt_algorithm', 'HS256');
+
+        $headers = [
+            'Authorization' => 'Bearer '.JwtToken::issue(1, 'ana@example.com'),
+        ];
+
+        $this->postJson('/api/v1/clients', [
+            'name' => 'Sin token',
+            'email' => 'sin-token@example.com',
+            'company' => 'Alpha',
+            'status' => 'active',
+        ])->assertStatus(401);
+
         $client = $this->postJson('/api/v1/clients', [
             'name' => 'Alpha Consultora',
             'email' => 'contacto@alphaconsultora.com',
             'company' => 'Alpha',
             'status' => 'active',
-        ]);
+        ], $headers);
 
         $client->assertStatus(201)
             ->assertJsonPath('data.email', 'contacto@alphaconsultora.com');
@@ -29,7 +44,7 @@ class OperationsApiTest extends TestCase
             'status' => 'active',
             'budget' => 4500.00,
             'due_date' => '2026-12-31',
-        ]);
+        ], $headers);
 
         $project->assertStatus(201)
             ->assertJsonPath('data.name', 'Portfolio digital');
@@ -42,12 +57,12 @@ class OperationsApiTest extends TestCase
             'assignee' => 'Ana',
             'priority' => 'high',
             'status' => 'pending',
-        ]);
+        ], $headers);
 
         $task->assertStatus(201)
             ->assertJsonPath('data.title', 'Diseñar la estrategia');
 
-        $dashboard = $this->getJson('/api/v1/dashboard');
+        $dashboard = $this->getJson('/api/v1/dashboard', $headers);
 
         $dashboard->assertStatus(200)
             ->assertJsonPath('data.metrics.clients', 1)

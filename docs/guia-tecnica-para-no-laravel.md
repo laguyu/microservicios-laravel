@@ -84,12 +84,12 @@ Las variables contienen infraestructura y secretos; el código utiliza archivos 
 
 Cada servicio utiliza Dedoc Scramble para construir un contrato OpenAPI. Este contrato describe rutas, campos, formatos, respuestas posibles y requerimientos de seguridad Bearer donde aplica.
 
-La interfaz interactiva usa Stoplight Elements. Al abrir una ruta `POST` y seleccionar **Try It**, muestra los campos definidos para esa operación. Por ejemplo, el registro ofrece `name`, `email` y `password`.
+La interfaz interactiva usa Swagger UI. Al abrir una ruta `POST` y seleccionar **Try it out**, muestra los campos definidos para esa operación. Por ejemplo, el registro ofrece `name`, `email` y `password`.
 
 ### Diferencia entre Render y Wasmer
 
 - **Render** sirve la documentación dinámica generada por Scramble.
-- **Wasmer** sirve la misma interfaz Stoplight Elements, pero con un archivo OpenAPI estático.
+- **Wasmer** sirve Swagger UI con un archivo OpenAPI estático.
 
 El enfoque estático en Wasmer es intencional. El runtime PHP/WASI de Wasmer no es compatible de manera fiable con la generación dinámica de Scramble. GitHub Actions genera `public/docs/api.json` antes de desplegar, y Wasmer solo entrega ese archivo y la interfaz web. El visitante obtiene la misma experiencia de documentación sin provocar errores de runtime.
 

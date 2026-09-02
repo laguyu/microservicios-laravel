@@ -54,7 +54,7 @@ Los endpoints `POST` están documentados con esquemas OpenAPI explícitos. Por e
 
 ## Documentación OpenAPI
 
-La documentación utiliza [Dedoc Scramble](https://scramble.dedoc.co/) y Stoplight Elements.
+La documentación utiliza [Dedoc Scramble](https://scramble.dedoc.co/) y Swagger UI.
 
 | Servicio | Documentación |
 | --- | --- |
@@ -63,7 +63,7 @@ La documentación utiliza [Dedoc Scramble](https://scramble.dedoc.co/) y Stoplig
 | Users Service | `https://portfolio-users-service.onrender.com/docs/api` |
 | Notifications Service | `https://portfolio-notifications-service.onrender.com/docs/api` |
 
-En Wasmer, el documento OpenAPI se exporta en CI como archivo estático (`public/docs/api.json`). Esto evita incompatibilidades del runtime PHP/WASI con la generación dinámica de Scramble. La interfaz conserva el mismo motor visual utilizado por Scramble en Render.
+En Wasmer, el documento OpenAPI se exporta en CI como archivo estático (`public/docs/api.json`). Esto evita incompatibilidades del runtime PHP/WASI con la generación dinámica de Scramble. La interfaz de documentación se sirve con Swagger UI para habilitar el botón global **Authorize**.
 
 ## Cómo probar la demo
 
